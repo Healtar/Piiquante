@@ -88,7 +88,7 @@ exports.createSauce = async (req, res, next) => {
           sauce.dislikes++;
           try {
             await Sauce.updateOne({_id: req.params.id}, {dislikes: sauce.dislikes, usersDisliked: sauce.usersDisliked})
-            res.status(200).json({message: 'youpiiii'})
+            res.status(200).json({message: 'like ajouté'})
           } catch (error) {
             res.status(400).json({usersDisliked: usersDisliked})
           }
@@ -122,7 +122,7 @@ exports.createSauce = async (req, res, next) => {
             try 
             {
               await Sauce.updateOne({_id: req.params.id}, {dislikes: sauce.dislikes, usersDisliked: sauce.usersDisliked})
-              res.status(200).json({message: 'youpiiii'})
+              res.status(200).json({message: 'like/dislike annulé'})
             } catch (error) 
             {
               res.status(400).json({usersDisliked: usersDisliked})
@@ -142,7 +142,7 @@ exports.createSauce = async (req, res, next) => {
             try 
             {
               await Sauce.updateOne({_id: req.params.id}, {likes: sauce.likes, usersLiked: sauce.usersLiked})
-              res.status(200).json({message: 'youpiiii'})
+              res.status(200).json({message: 'dislike ajouté'})
             } catch (error) 
             {
               res.status(400).json({userliked: usersLiked})

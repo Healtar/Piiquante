@@ -6,7 +6,6 @@ exports.createSauce = async (req, res, next) => {
   
   const sauceObject = JSON.parse(req.body.sauce); 
   
-
    const sauce = await new Sauce({
     ...sauceObject,
     userId: req.auth.userId,
@@ -20,7 +19,7 @@ exports.createSauce = async (req, res, next) => {
    try 
    {
     sauce.save(); 
-    res.status(201).json({message: 'Post saved successfully!'});
+    res.status(201).json({message: 'Sauce créé avec succès'});
    } 
    catch (error) 
    {
@@ -61,7 +60,7 @@ exports.createSauce = async (req, res, next) => {
           await Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
           res.status(200).json({message : 'Objet modifié!'});
         } catch (error) {
-          res.status(401).json({ error });
+          res.status(400).json({ error });
         }
 
       }
@@ -86,9 +85,9 @@ exports.createSauce = async (req, res, next) => {
       case -1:
         if (sauce.usersDisliked.indexOf(req.auth.userId) == -1) {
           sauce.usersDisliked.push(req.auth.userId);
-          sauce.likes--;
+          sauce.dislikes++;
           try {
-            await Sauce.updateOne({_id: req.params.id}, {likes: sauce.likes, usersDisliked: sauce.usersDisliked})
+            await Sauce.updateOne({_id: req.params.id}, {dislikes: sauce.dislikes, usersDisliked: sauce.usersDisliked})
             res.status(200).json({message: 'youpiiii'})
           } catch (error) {
             res.status(400).json({usersDisliked: usersDisliked})
@@ -119,10 +118,10 @@ exports.createSauce = async (req, res, next) => {
           else if (sauce.usersDisliked.indexOf(req.auth.userId) !== -1) 
           {
             sauce.usersDisliked = sauce.usersDisliked.filter((user) => user !== req.auth.userId);
-            sauce.likes++;
+            sauce.dislikes--;
             try 
             {
-              await Sauce.updateOne({_id: req.params.id}, {likes: sauce.likes, usersDisliked: sauce.usersDisliked})
+              await Sauce.updateOne({_id: req.params.id}, {dislikes: sauce.dislikes, usersDisliked: sauce.usersDisliked})
               res.status(200).json({message: 'youpiiii'})
             } catch (error) 
             {
@@ -197,7 +196,7 @@ exports.createSauce = async (req, res, next) => {
             } 
             catch (error) 
             {
-              res.status(401).json({ error });
+              res.status(400).json({ error });
             }
            
           })

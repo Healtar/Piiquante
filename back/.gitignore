@@ -5,3 +5,6 @@
 
 # assets
 /images
+
+# variables env
+/.env

@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 const multer = require('../middleware/multer');
 
 // Controllers
-const sauceCtrl = require('../controllers/sauce');
+const sauceCtrl = require('../controllers/controller.sauce');
 
 
 // Create

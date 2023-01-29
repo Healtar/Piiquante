@@ -5,27 +5,27 @@ const Sauce = require('../models/Sauce');
 // CREATE
 exports.createSauce = async (req, res) => {
 
-const sauceObject = JSON.parse(req.body.sauce); 
-const userId = req.auth.userId
-const {name, manufacturer, description, mainPepper, heat} = sauceObject;
+  const sauceObject = JSON.parse(req.body.sauce); 
+  const userId = req.auth.userId
+  const {name, manufacturer, description, mainPepper, heat} = sauceObject;
 
-const sauce = new Sauce({
-  userId: userId,
-  name: name,
-  manufacturer: manufacturer,
-  description: description,
-  mainPepper: mainPepper,
-  imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-  heat: heat,
-  likes: 0,
-  dislikes: 0,
-  usersLiked: [],
-  usersDisliked: []
-  })
+  const sauce = new Sauce({
+    userId: userId,
+    name: name,
+    manufacturer: manufacturer,
+    description: description,
+    mainPepper: mainPepper,
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    heat: heat,
+    likes: 0,
+    dislikes: 0,
+    usersLiked: [],
+    usersDisliked: []
+    })
 
-  sauce.save()
-       .then((message) => res.status(201).json({message}))
-       .catch((error) => res.status(400).json({error}))
+    sauce.save()
+         .then((message) => res.status(201).json({message}))
+         .catch((error) => res.status(400).json({error}))
 };
 
 // READ

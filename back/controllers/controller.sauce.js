@@ -84,7 +84,6 @@ exports.updateSauce = (req, res) => {
        .catch((error) => res.status(400).json(error))
 };
 
-// UPDATE
 exports.likeSauce = (req, res) => {
 
   const sauceId = req.params.id;
@@ -97,13 +96,13 @@ exports.likeSauce = (req, res) => {
   const userState = {
     '-1': ()  => userDislike(sauceId, userId, res),
     '0':  ()  => cancelLikeDislike(sauceId, userId, res),
-    '1':  ()  => userLike(sauceId, userId, res)
+    '1':  ()  => userLike(sauceId, userId, res),
+    'default': () => {console.log('valeur inconnue'); res.status(400).json({message: 'valeur inconnue'})}
   };
 
-  userState[like]();
+  (userState[like] || userState['default'])();
 
 };
-
 
 // DELETE
 exports.deleteSauce = (req, res) => {
@@ -175,7 +174,7 @@ function userDislike (sauceId, userId, res)
           sauce.usersDisliked.push(userId);
           sauce.dislikes++;
           Sauce.updateOne({_id: sauceId}, {dislikes: sauce.dislikes, usersDisliked: sauce.usersDisliked})
-               .then(() => res.status(200).json({message: 'like ajouté'}))
+               .then(() => res.status(200).json({message: 'dislike ajouté'}))
                .catch((error) => res.status(400).json(error))
 
        })
@@ -207,10 +206,12 @@ function cancelLikeDislike (sauceId, userId, res)
             sauce.usersDisliked = sauce.usersDisliked.filter((user) => user !== userId);
             sauce.dislikes--;
             Sauce.updateOne({_id: sauceId}, {dislikes: sauce.dislikes, usersDisliked: sauce.usersDisliked})
-                 .then(() => res.status(200).json({message: 'Like annulé !'}))
+                 .then(() => res.status(200).json({message: 'Dislike annulé !'}))
                  .catch((error) => res.staus(400).json(error))
           }
 
        })
        .catch(() => res.status(400).json())
 }
+
+
